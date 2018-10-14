@@ -5,7 +5,7 @@ import com.google.gson.Gson
 
 data class LecturaHeroe(
     val name : String,
-    val id: Int,
+    val id: String,
     val localized_name: String) {
     class LecturaHeroeArrayDeserializer : ResponseDeserializable<Array<LecturaHeroe>> {
         override fun deserialize(content: String): Array<LecturaHeroe>? {
