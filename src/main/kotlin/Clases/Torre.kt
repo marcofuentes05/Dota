@@ -1,4 +1,4 @@
 package Clases
 
-class Torre {
+class Torre(var estaViva: Boolean = true) {
 }

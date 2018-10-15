@@ -1,4 +1,6 @@
 package Clases
+import Narrador
 
-class Partido {
+class Partido(T: Any): Narrador {
+
 }

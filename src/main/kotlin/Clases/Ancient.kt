@@ -1,4 +1,4 @@
 package Clases
 
-class Ancient {
+data class Ancient(var estaMuerto: Boolean = false) {
 }
