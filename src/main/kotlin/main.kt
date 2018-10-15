@@ -1,5 +1,6 @@
 import Clases.Equipo
 import Clases.Heroe
+import Clases.Partido
 import com.github.kittinunf.fuel.Fuel
 
 fun main (args : Array<String>){
@@ -9,8 +10,10 @@ fun main (args : Array<String>){
             2. Matan torres
     """.trimIndent()
 
-
     //URL del api
+    //Este URL no es el mismo que se proporciono con el documento ya que el poporcionado iba a un repositorio en GitHub,
+    //esto hacia que Fuel no detectara el JSON y daba errores. Por tanto copie el JSON a JSONGenerator y generé un link nuevo
+    // este link nuevo es el que se usa a continuacion.
     val url = "http://www.json-generator.com/api/json/get/cfrjqHclbC?indent=2"
     //Extraccion del api
     val (request, response, result) = Fuel.get(url).responseObject(Heroe.HeroeArrayDeserializer())
@@ -19,7 +22,6 @@ fun main (args : Array<String>){
     Thread.sleep(5000)
     //La funcion arrayToArrayList solo convierte el Array en ArrayList
     val listaHeroes : ArrayList <Heroe> = arrayToArrayList(result.get())
-    //listaHeroes.forEach{println(it.toString())}
 
     //EMPEZAMOS CON EL SINGLE DRAFT
 
@@ -68,7 +70,9 @@ fun main (args : Array<String>){
 
 
     //Teoricamente aqui acaba el draft
-   /* var empezando : String = """
+    //Aqui comienza el mero juego
+    //TODO: var partido : Partido ()
+    var empezando : String = """
         -------------------
              EMPEZANDO
         -------------------
@@ -81,10 +85,11 @@ fun main (args : Array<String>){
     """.trimIndent())
     println(menu1)
 
-    var respuesta2 : String = readLine()!!.toString()*/
+    var respuesta2 : String = readLine()!!.toString()
 
 
 }
+
 fun arrayToArrayList(array : Array<Heroe>) : ArrayList<Heroe>{
     var arrayList : ArrayList<Heroe> = arrayListOf ()
     for (i in 0..array.size-1){
