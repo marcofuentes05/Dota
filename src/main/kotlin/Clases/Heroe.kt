@@ -2,7 +2,7 @@ package Clases
 
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
-
+//Un objeto heroe tiene un nombre y un ID, que son obtenidos de internet a traves de Graddle
 data class Heroe(val name: String,
                  val id: Int,
                  val localized_name: String) {

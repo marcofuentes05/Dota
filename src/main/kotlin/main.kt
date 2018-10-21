@@ -33,6 +33,7 @@ fun main (args : Array<String>){
     val listaHeroes : ArrayList <Heroe> = arrayToArrayList(result.get())
     var control : Boolean = true
 
+    //Primero se le pide al usuario que seleccione el idioma en el que desea jugar
     println("""
         IDIOMA/LANGUAGE:
             1. ESPAÑOL
@@ -46,8 +47,11 @@ fun main (args : Array<String>){
         c = English()
     }
     var partida = Partido (c, listaEquipos)
-    //Aqui si empezamos el draft
+
+
+    //Aqui si empezamos el draft (y con el juego)
     println(partida.bienvenida())
+    //primero se hace el draft con todos los datos de los heroes que se tienen
     if (listaHeroes?.size != 0){
         var contador = 0
         for (i in (0..9)){
@@ -72,6 +76,8 @@ fun main (args : Array<String>){
     }else{
         println("No hay héroes en la lista :(")
     }
+
+    //Se muestran los heroes que tiene cada equipo
     println("${partida.algo()} RADIANT")
     listaEquipos[0].heroes.forEach{println(it.toString())}
 
@@ -81,32 +87,150 @@ fun main (args : Array<String>){
 
     println("${partida.algo()} DIRE")
     listaEquipos[1].heroes.forEach{println(it.toString())}
+
+
     //Teoricamente aqui acaba el draft
 
     println(partida.empezarJuego())
-    println(partida.menu1())
-    var respuesta2 : String = readLine()!!.toString()
-    when (respuesta2){
-        "1"->{
-            println(partida.pregunta())
-            var radiantMato = readLine()!!
-            when (radiantMato){
-                "s"->{
-                    
-                }
-                "n"->{
 
+    //Se comienza con el juego por turnos hasta que un equipo se quede sin torres
+    while(partida.listaEquipos[0].torres.size != 0 && partida.listaEquipos[1].torres.size!=0){
+        println(partida.menu1())
+        var respuesta2 : String = readLine()!!.toString()
+        when (respuesta2){
+            "1"->{
+                println(partida.pregunta())
+                var radiantMato = readLine()!!
+                when (radiantMato){
+                    "1"->{
+                        println(partida.cuantasMuertes())
+                        var n = readLine()!!.toInt()
+                        partida.heroesVivosDire = partida.heroesVivosDire-n
+                        if (n == 1){
+                            println(partida.ocurrioUnKill(true))
+                        }else if (n >1 && n<5){
+                            println(partida.ocurrieronDosOMasKills(true))
+                        }else{
+                            println(partida.ocurrieronCincoKills(true))
+                        }
+                    }
+                    "2"->{
+                        println(partida.cuantasMuertes())
+                        var n = readLine()!!.toInt()
+                        partida.heroesVivosRadiant = partida.heroesVivosRadiant - n
+                        if (n == 1){
+                            println(partida.ocurrioUnKill(false))
+                        }else if (n >1 && n<5){
+                            println(partida.ocurrieronDosOMasKills(false))
+                        }else{
+                            println(partida.ocurrieronCincoKills(false))
+                        }
+                    }
+                }
+            }
+            "2" ->{
+                println(partida.pregunta())
+                var radiantMato = readLine()!!
+                when (radiantMato){
+                    "1"->{
+                        partida.listaEquipos[1].torres.removeAt(0)
+                        println(partida.matanUnaTorre(true))
+                    }
+                    "2"->{
+                        partida.listaEquipos[0].torres.removeAt(0)
+                        println(partida.matanUnaTorre(false))
+                    }
                 }
             }
         }
-        "2" ->{
-            println(partida.pregunta())
+        //Luego de cada turno se imprime el estado de cada equipo (nuero de torres y heroes vivos
+        println("""
+        ESTADO DE RADIANT:
+            No. de Torres vivas: ${partida.listaEquipos[0].torres.size}
+            No. de Heroes Vivos: ${partida.heroesVivosRadiant}
+
+        ESTADO DE DIRE:
+            No. de Torres vivas: ${partida.listaEquipos[1].torres.size}
+            No. de Heroes vivos: ${partida.heroesVivosDire}
+    """.trimIndent())
+    }
+    //Cuando un equipo se queda sin torres, se habilita la opcion de matar al ancient
+    while(partida.listaEquipos[0].ancient.estaMuerto == false && partida.listaEquipos[1].ancient.estaMuerto==false){
+        println(partida.menu2())
+        var r = readLine()!!.toString()
+        when (r){
+            "1"->{
+                println(partida.pregunta())
+                var radiantMato = readLine()!!
+                when (radiantMato){
+                    "1"->{
+                        println(partida.cuantasMuertes())
+                        var n = readLine()!!.toInt()
+                        partida.heroesVivosDire = partida.heroesVivosDire-n
+                        if (n == 1){
+                            println(partida.ocurrioUnKill(true))
+                        }else if (n >1 && n<5){
+                            println(partida.ocurrieronDosOMasKills(true))
+                        }else{
+                            println(partida.ocurrieronCincoKills(true))
+                        }
+                    }
+                    "2"->{
+                        println(partida.cuantasMuertes())
+                        var n = readLine()!!.toInt()
+                        partida.heroesVivosRadiant = partida.heroesVivosRadiant - n
+                        if (n == 1){
+                            println(partida.ocurrioUnKill(false))
+                        }else if (n >1 && n<5){
+                            println(partida.ocurrieronDosOMasKills(false))
+                        }else{
+                            println(partida.ocurrieronCincoKills(false))
+                        }
+                    }
+                }
+            }
+            "2" ->{
+                println(partida.pregunta())
+                var radiantMato = readLine()!!
+                when (radiantMato){
+                    "1"->{
+
+                        partida.listaEquipos[1].torres.removeAt(0)
+                        println(partida.matanUnaTorre(true))
+                    }
+                    "2"->{
+                        partida.listaEquipos[0].torres.removeAt(0)
+                        println(partida.matanUnaTorre(false))
+                    }
+                }
+            }
+            "3" ->{
+                //Para matar al ancient se verifica que ese equipo ya no tenga torres
+                println(partida.pregunta())
+                var res = readLine()!!.toString()
+                when(res){
+                    "1"->{
+                        if (partida.listaEquipos[1].torres.size == 0){
+                            println(partida.radiantGana())
+                        }else{
+                            println(partida.error())
+                        }
+                    }
+                    "2" ->{
+                        if(partida.listaEquipos[0].torres.size == 0){
+                            println(partida.direGana())
+                        }else{
+                            println(partida.error())
+                        }
+                    }
+                }
+
+            }
         }
     }
-
-
 }
 
+//Fuel debuelve la lista de objetos en una lista de tipo Array. Como nosotrso queremos un ArrayList, este metodo nos ayuda a colocarlo de una forma que nos sea util
 fun arrayToArrayList(array : Array<Heroe>) : ArrayList<Heroe>{
     var arrayList : ArrayList<Heroe> = arrayListOf ()
     for (i in 0..array.size-1){
@@ -114,4 +238,3 @@ fun arrayToArrayList(array : Array<Heroe>) : ArrayList<Heroe>{
     }
     return arrayList
 }
-
