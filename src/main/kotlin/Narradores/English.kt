@@ -1,4 +1,6 @@
 package Narradores
+import Narrador
 
-class English {
+class English: Narrador {
+
 }
