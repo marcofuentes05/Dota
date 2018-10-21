@@ -4,11 +4,6 @@ import Clases.Partido
 import com.github.kittinunf.fuel.Fuel
 
 fun main (args : Array<String>){
-    var menu1 : String = """
-        MENU:
-            1. Ocurrieron muertes
-            2. Matan torres
-    """.trimIndent()
 
     //URL del api
     //Este URL no es el mismo que se proporciono con el documento ya que el poporcionado iba a un repositorio en GitHub,
@@ -19,11 +14,8 @@ fun main (args : Array<String>){
     val (request, response, result) = Fuel.get(url).responseObject(Heroe.HeroeArrayDeserializer())
     val (heroes,err) = result
 
+    // El sleep es paraesperar la respuesta del server
     Thread.sleep(5000)
-    //La funcion arrayToArrayList solo convierte el Array en ArrayList
-    val listaHeroes : ArrayList <Heroe> = arrayToArrayList(result.get())
-
-    //EMPEZAMOS CON EL SINGLE DRAFT
 
     //Se declaran los equipos y se inicializan
     val listaEquipos : ArrayList <Equipo> = arrayListOf()
@@ -32,13 +24,46 @@ fun main (args : Array<String>){
     listaEquipos.add(Equipo("Dire"))
     listaEquipos[1].agregarTorres()
 
+    //La funcion arrayToArrayList solo convierte el Array en ArrayList
+    val listaHeroes : ArrayList <Heroe> = arrayToArrayList(result.get())
+    //var control : Boolean = true
+    /*while (control){
+        try{
+            println("""
+            IDIOMA/LANGUAGE:
+                0. ESPAÑOL
+                1. ENGLISH
+            """.trimIndent())
+            var idioma = readLine()!!.toInt()
+            var lengua: Boolean
+            if (idioma == 1){
+                val partida = Partido<Equipo>(listaEquipos,listaHeroes,idioma)
+                control = false
+            }else if (idioma == 2){
+                val partida = Partido<Equipo>(listaEquipos,listaHeroes,idioma)
+                control = false
+            }else{
+                println("?")
+            }
+        }catch(e: Exception){
+            println("?")
+        }
+    }
+*/
+
     //Aqui si empezamos el draft
+    println("""
+        ------------------------------------
+                COMIENZA EL DRAFT
+        ------------------------------------
+    """.trimIndent())
+
     if (listaHeroes?.size != 0){
         var contador = 0
         for (i in (0..9)){
             println("Selección de Heroes de ${listaEquipos[contador].nombre}")
             for (a  in (0..listaHeroes.size-1)){
-                println("$a. ${listaHeroes[a].name}")
+                println("$a. ${listaHeroes[a].toString()}")
             }
             var datoIncorrecto : Boolean = true
             while (datoIncorrecto){
@@ -70,21 +95,15 @@ fun main (args : Array<String>){
 
 
     //Teoricamente aqui acaba el draft
-    //Aqui comienza el mero juego
-    //TODO: var partido : Partido ()
+    val partida = Partido<Equipo>(listaEquipos)
+
+
     var empezando : String = """
-        -------------------
-             EMPEZANDO
-        -------------------
+        ----------------------------
+             EMPEZANDO EL JUEGO
+        ----------------------------
     """.trimIndent()
     println(empezando)
-
-    println("""
-
-
-    """.trimIndent())
-    println(menu1)
-
     var respuesta2 : String = readLine()!!.toString()
 
 
